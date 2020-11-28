@@ -1,11 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservations Demo</title>
 </head>
+
 <body>
-    
+
+    <form>
+        <div>
+            <label>Full name:</label><input type="text" name="attFullName" id="attFullName">
+        </div>
+        <div>
+            <input type="button" value="Register">
+        </div>
+    </form>
+    <table border='1' id="attendeesTable">
+        <thead>
+            <tr>
+                <th>Full name</th>
+            </tr>
+        </thead>
+        <tbody id="attendeesTableBody">
+        </tbody>
+    </table>
+
+    <script>
+        var attFullname = window.prompt("What is your name");
+        var body = document.getElementById("attendeesTableBody");
+        var row = document.createElement("tr");
+        var cell = document.createElement("td");
+        cell.innerHTML = attFullname;
+        body.appendChild(row);
+        row.appendChild(cell);
+    </script>
 </body>
+
 </html>
