@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservations Demo</title>
     <script>
-        
+
         function addAttendee() {
             getANewAttendee();
             attendees.sort();
@@ -16,11 +16,18 @@
 
         function getANewAttendee() {
             var attFullname = document.getElementById("attFullName").value;
-            attendees.push(attFullname);
+            var attCompany = document.getElementById("attCompany").value;
+            var attendee = {
+                fullName : attFullname,
+                company : attCompany,
+            };
+            window.alert(attendee.fullName + " ~ " + attendee.company);
+            attendees.push(attendee);
         }
 
         function resetDataEntryFields() {
             document.getElementById("attFullName").value = "";
+            document.getElementById("attCompany").value = "";
         }
 
         function displayAttendees() {
@@ -29,10 +36,16 @@
 
             for (var i = 0; i < attendees.length; i++) {
                 var row = document.createElement("tr");
+
                 var cell = document.createElement("td");
-                cell.innerHTML = attendees[i];
-                body.appendChild(row);
+                cell.innerHTML = attendees[i].fullName;
                 row.appendChild(cell);
+
+                cell = document.createElement("td");
+                cell.innerHTML = attendees[i].company;
+                row.appendChild(cell);
+
+                body.appendChild(row);
             }
         }
 
@@ -50,6 +63,9 @@
             <label>Full name:</label><input type="text" name="attFullName" id="attFullName">
         </div>
         <div>
+            <label>Company:</label><input type="text" name="attCompany" id="attCompany">
+        </div>
+        <div>
             <input type="button" value="Register" onclick="addAttendee();">
         </div>
     </form>
@@ -57,6 +73,7 @@
         <thead>
             <tr>
                 <th>Full name</th>
+                <th>Company</th>
             </tr>
         </thead>
         <tbody id="attendeesTableBody">
