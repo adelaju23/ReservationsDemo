@@ -7,9 +7,19 @@
     <title>Reservations Demo</title>
     <script>
 
+        function compareAttendees(a, b) {
+            if (a.fullName < b.fullName) return -1;
+            if (a.fullName > b.fullName) return 1;
+            // equal fuuk names
+            if (a.company < b.company) return -1;
+            if (a.company > b.company) return 1;
+
+            return 0;
+        }
+
         function addAttendee() {
             getANewAttendee();
-            attendees.sort();
+            attendees.sort(compareAttendees);
             displayAttendees();
             resetDataEntryFields();
         }
@@ -18,10 +28,9 @@
             var attFullname = document.getElementById("attFullName").value;
             var attCompany = document.getElementById("attCompany").value;
             var attendee = {
-                fullName : attFullname,
-                company : attCompany,
+                fullName: attFullname,
+                company: attCompany,
             };
-            window.alert(attendee.fullName + " ~ " + attendee.company);
             attendees.push(attendee);
         }
 
