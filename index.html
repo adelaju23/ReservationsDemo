@@ -7,10 +7,12 @@
     <title>Reservations Demo</title>
     <script>
 
+        var attendees = [];
+
         function compareAttendees(a, b) {
             if (a.fullName < b.fullName) return -1;
             if (a.fullName > b.fullName) return 1;
-            // equal fuuk names
+            // we have equal full names, see company
             if (a.company < b.company) return -1;
             if (a.company > b.company) return 1;
 
@@ -19,7 +21,6 @@
 
         function addAttendee() {
             getANewAttendee();
-            attendees.sort(compareAttendees);
             displayAttendees();
             resetDataEntryFields();
         }
@@ -40,6 +41,8 @@
         }
 
         function displayAttendees() {
+            attendees.sort(compareAttendees);
+
             var body = document.getElementById("attendeesTableBody");
             body.innerHTML = ""; // remove previous rows
 
@@ -58,53 +61,59 @@
             }
         }
 
+        function loadFromServer() {
+            // AJAX request from the server
+            var req = new XMLHttpRequest();
+            req.open("GET", "http://127.0.0.1:3000/");
+            req.onload = function () {
+                if (req.status == 200) {
+                    attendees = JSON.parse(req.response);
+                    displayAttendees();
+                } else {
+                    attendees = [];
+                    displayAttendees();
+                    console.error("Problem loading attendees : " + req.status);
+                }
+            };
+            req.send();
+        }
+
     </script>
 </head>
 
 <body>
-
-    <form>
-        <div>
-            <label>Full name:</label><input type="text" name="attFullName" id="attFullName">
-        </div>
-        <div>
-            <label>Company:</label><input type="text" name="attCompany" id="attCompany">
-        </div>
-        <div>
-            <input type="button" value="Register" onclick="addAttendee();">
-        </div>
-    </form>
-    <table border='1' id="attendeesTable">
-        <thead>
-            <tr>
-                <th>Full name</th>
-                <th>Company</th>
-            </tr>
-        </thead>
-        <tbody id="attendeesTableBody">
-        </tbody>
-    </table>
+    <div id="adv-section" style="background-color: deepskyblue; text-align: center; padding-top: 2rem; height: 8rem;">
+        <img src="http://www.odyssea.com/wp-content/uploads/2020/07/logo_center.png">
+    </div>
+    <div id="data-section">
+        <form>
+            <div>
+                <label>Full name:</label><input type="text" name="attFullName" id="attFullName">
+            </div>
+            <div>
+                <label>Company:</label><input type="text" name="attCompany" id="attCompany">
+            </div>
+            <div>
+                <input type="button" value="Register" onclick="addAttendee();">
+                <input type="button" value="Refresh" onclick="loadFromServer();">
+            </div>
+        </form>
+        <table border='1' id="attendeesTable">
+            <thead>
+                <tr>
+                    <th>Full name</th>
+                    <th>Company</th>
+                </tr>
+            </thead>
+            <tbody id="attendeesTableBody">
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>
 <script>
 
-    // from the server
-    var attendees = [
-        {
-            fullName: "John Doe",
-            company: "Matsushita",
-        },
-        {
-            fullName: "Jane Dee",
-            company: "Matsushita",
-        },
-        {
-            fullName: "Jason Foo",
-            company: "Marata",
-        },
+    loadFromServer();
 
-    ];
-
-    displayAttendees();    
 </script>
