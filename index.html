@@ -116,4 +116,31 @@
 
     loadFromServer();
 
+    // demo the time out
+    // Comment to load faster
+
+    // initial status
+    document.getElementById("adv-section").hidden = false;
+    document.getElementById("data-section").hidden = true;
+
+    // using a distinct function
+    // function callbackShowContent() {
+    //     document.getElementById("adv-section").hidden = true;
+    //     document.getElementById("data-section").hidden = false;
+    // }
+    // window.setTimeout(callbackShowContent, 2000);
+
+    // using an inline function
+    // window.setTimeout(function() {
+    //     document.getElementById("adv-section").hidden = true;
+    //     document.getElementById("data-section").hidden = false;
+    // }, 2000);
+
+    // using an arrow function
+    window.setTimeout(() => {
+        document.getElementById("adv-section").hidden = true;
+        document.getElementById("data-section").hidden = false;
+    }, 2000);
+
+
 </script>
