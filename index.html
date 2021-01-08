@@ -20,19 +20,19 @@
         }
 
         function addAttendee() {
-            getANewAttendee();
-            displayAttendees();
+            // will make AJAX request instead
+            var req = new XMLHttpRequest();
+            req.open("POST", "http://127.0.0.1:3000/attendees", true);
+            // set headers
+            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            // callback when the the request is served
+            req.onload = () => { 
+                console.log("Data sent to the server"); 
+                loadFromServer(); }        
+            console.log("Sendinf data to the server");
+            req.send("fullName=" + document.getElementById("attFullName").value + "&company=" + document.getElementById("attCompany").value);
+            
             resetDataEntryFields();
-        }
-
-        function getANewAttendee() {
-            var attFullname = document.getElementById("attFullName").value;
-            var attCompany = document.getElementById("attCompany").value;
-            var attendee = {
-                fullName: attFullname,
-                company: attCompany,
-            };
-            attendees.push(attendee);
         }
 
         function resetDataEntryFields() {
@@ -64,7 +64,7 @@
         function loadFromServer() {
             // AJAX request from the server
             var req = new XMLHttpRequest();
-            req.open("GET", "http://127.0.0.1:3000/");
+            req.open("GET", "http://127.0.0.1:3000/attendees");
             req.onload = function () {
                 if (req.status == 200) {
                     attendees = JSON.parse(req.response);
@@ -86,7 +86,7 @@
         <img src="http://www.odyssea.com/wp-content/uploads/2020/07/logo_center.png">
     </div>
     <div id="data-section">
-        <form>
+        <form method="post" action="http://127.0.0.1:3000/attendees" id="attendeeData">
             <div>
                 <label>Full name:</label><input type="text" name="attFullName" id="attFullName">
             </div>
@@ -94,7 +94,7 @@
                 <label>Company:</label><input type="text" name="attCompany" id="attCompany">
             </div>
             <div>
-                <input type="button" value="Register" onclick="addAttendee();">
+                <input type="submit" value="Register">
                 <input type="button" value="Refresh" onclick="loadFromServer();">
             </div>
         </form>
@@ -142,5 +142,13 @@
         document.getElementById("data-section").hidden = false;
     }, 2000);
 
+
+    document.getElementById("attendeeData")
+    .addEventListener('submit', (event) => {
+        // bypass the default action
+        event.preventDefault();
+
+        addAttendee();
+    });
 
 </script>
