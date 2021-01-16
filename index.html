@@ -7,7 +7,7 @@
     <title>Reservations Demo</title>
     <script>
 
-        var attendees = [];
+        let attendees = [];
 
         function compareAttendees(a, b) {
             if (a.fullname < b.fullname) return -1;
@@ -21,7 +21,7 @@
 
         function addAttendee() {
             // will make AJAX request instead
-            var req = new XMLHttpRequest();
+            const req = new XMLHttpRequest();
             req.open("POST", "http://127.0.0.1:3000/attendees", true);
             // set headers
             req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -43,13 +43,13 @@
         function displayAttendees() {
             attendees.sort(compareAttendees);
 
-            var body = document.getElementById("attendeesTableBody");
+            const body = document.getElementById("attendeesTableBody");
             body.innerHTML = ""; // remove previous rows
 
-            for (var i = 0; i < attendees.length; i++) {
-                var row = document.createElement("tr");
+            for (let i = 0; i < attendees.length; i++) {
+                const row = document.createElement("tr");
 
-                var cell = document.createElement("td");
+                let cell = document.createElement("td");
                 cell.innerHTML = attendees[i].fullname;
                 row.appendChild(cell);
 
@@ -63,7 +63,7 @@
 
         function loadFromServer() {
             // AJAX request from the server
-            var req = new XMLHttpRequest();
+            const req = new XMLHttpRequest();
             req.open("GET", "http://127.0.0.1:3000/attendees");
             req.onload = function () {
                 if (req.status == 200) {
