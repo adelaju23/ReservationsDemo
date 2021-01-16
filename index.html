@@ -10,8 +10,8 @@
         var attendees = [];
 
         function compareAttendees(a, b) {
-            if (a.fullName < b.fullName) return -1;
-            if (a.fullName > b.fullName) return 1;
+            if (a.fullname < b.fullname) return -1;
+            if (a.fullname > b.fullname) return 1;
             // we have equal full names, see company
             if (a.company < b.company) return -1;
             if (a.company > b.company) return 1;
@@ -30,8 +30,8 @@
                 console.log("Data sent to the server"); 
                 loadFromServer(); }        
             console.log("Sendinf data to the server");
-            req.send("fullName=" + document.getElementById("attFullName").value + "&company=" + document.getElementById("attCompany").value);
-            
+            req.send("fullname=" + document.getElementById("attFullName").value + "&company=" + document.getElementById("attCompany").value);
+
             resetDataEntryFields();
         }
 
@@ -50,7 +50,7 @@
                 var row = document.createElement("tr");
 
                 var cell = document.createElement("td");
-                cell.innerHTML = attendees[i].fullName;
+                cell.innerHTML = attendees[i].fullname;
                 row.appendChild(cell);
 
                 cell = document.createElement("td");
