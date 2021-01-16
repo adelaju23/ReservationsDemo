@@ -57,6 +57,18 @@
                 cell.innerHTML = attendees[i].company;
                 row.appendChild(cell);
 
+                cell = document.createElement("td");
+                cell = document.createElement("button");
+                cell.innerHTML = "Delete";
+                cell.addEventListener(
+                    "click",
+                    function(event) {
+                        deleteOnServer(attendees[i].id);
+                    }
+                )
+                row.appendChild(cell);
+                
+
                 body.appendChild(row);
             }
         }
@@ -73,6 +85,25 @@
                     attendees = [];
                     displayAttendees();
                     console.error("Problem loading attendees : " + req.status);
+                }
+            };
+            req.send();
+        }
+
+        function deleteOnServer(id) {
+            console.log("Deleting from the server " + id);
+            // AJAX request from the server
+            var req = new XMLHttpRequest();
+            // the DELETE method does not work so ...
+            // req.open("DELETE", "http://127.0.0.1:3000/attendees/"+id);
+            // ... use the workaround with the GET + the DELETE path
+            req.open("GET", "http://127.0.0.1:3000/attendees/DELETE/"+id);
+            req.onload = function () {
+                if (req.status == 200) {
+                    loadFromServer();
+                } else {
+                    alert("Could not delete");
+                    console.error("Problem deleting attendees : " + req.status);
                 }
             };
             req.send();
@@ -103,6 +134,7 @@
                 <tr>
                     <th>Full name</th>
                     <th>Company</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="attendeesTableBody">
