@@ -74,7 +74,7 @@
         }
 
         function loadFromServer() {
-            // AJAX request from the server
+            // AJAX request to the server
             const req = new XMLHttpRequest();
             req.open("GET", "http://127.0.0.1:3000/attendees");
             req.onload = function () {
@@ -92,7 +92,7 @@
 
         function deleteOnServer(id) {
             console.log("Deleting from the server " + id);
-            // AJAX request from the server
+            // AJAX request to the server
             var req = new XMLHttpRequest();
             // the DELETE method does not work so ...
             // req.open("DELETE", "http://127.0.0.1:3000/attendees/"+id);
@@ -108,6 +108,25 @@
             };
             req.send();
         }
+
+        function searchOnServer() {
+            // AJAX request to the server
+            var req = new XMLHttpRequest();
+            var filter = document.getElementById("searchOnName").value;
+            req.open("GET", "http://127.0.0.1:3000/attendees?name=" + filter);
+            req.onload = function () {
+                if (req.status == 200) {
+                    attendees = JSON.parse(req.response);
+                    displayAttendees();
+                } else {
+                    alert("Error searching");
+                    attendees = [];
+                    displayAttendees();
+                    console.error("Problem loading attendees : " + req.status);
+                }
+            };
+            req.send();
+        }        
 
     </script>
 </head>
@@ -129,6 +148,9 @@
                 <input type="button" value="Refresh" onclick="loadFromServer();">
             </div>
         </form>
+        <div>
+            <input type="text" name="searchOnName" id="searchOnName"><input type="button" value="Search" onclick="searchOnServer();">
+        </div>        
         <table border='1' id="attendeesTable">
             <thead>
                 <tr>
