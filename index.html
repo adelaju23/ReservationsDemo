@@ -19,6 +19,20 @@
             return 0;
         }
 
+        function updateAttendee(index) {
+            // will make AJAX request instead
+            const req = new XMLHttpRequest();
+            req.open("POST", "http://127.0.0.1:3000/attendees/PUT", true);
+            // set headers
+            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            // callback when the the request is served
+            req.onload = () => { 
+                console.log("Data sent to the server"); 
+                loadFromServer(); }        
+            console.log("Updating data to the server");
+            req.send("id=" + attendees[index].id + "&fullname=" + attendees[index].fullname + "&company=" + attendees[index].company);
+        }
+
         function addAttendee() {
             // will make AJAX request instead
             const req = new XMLHttpRequest();
@@ -50,22 +64,40 @@
                 const row = document.createElement("tr");
 
                 let cell = document.createElement("td");
+                cell.contentEditable = true;
+                cell.addEventListener("input", (ev) => {
+                    attendees[i].fullname = ev.target.innerHTML
+                })
                 cell.innerHTML = attendees[i].fullname;
                 row.appendChild(cell);
 
                 cell = document.createElement("td");
+                cell.contentEditable = true;
+                cell.addEventListener("input", (ev) => {
+                    attendees[i].company = ev.target.innerHTML
+                })
                 cell.innerHTML = attendees[i].company;
                 row.appendChild(cell);
 
                 cell = document.createElement("td");
-                cell = document.createElement("button");
-                cell.innerHTML = "Delete";
-                cell.addEventListener(
+                let button = document.createElement("button");
+                button.innerHTML = "Delete";
+                button.addEventListener(
                     "click",
                     function(event) {
                         deleteOnServer(attendees[i].id);
                     }
                 )
+                cell.appendChild(button)
+                button = document.createElement("button");
+                button.innerHTML = "Update";
+                button.addEventListener(
+                    "click",
+                    function(event) {
+                        updateAttendee(i);
+                    }
+                )
+                cell.appendChild(button)
                 row.appendChild(cell);
                 
 
